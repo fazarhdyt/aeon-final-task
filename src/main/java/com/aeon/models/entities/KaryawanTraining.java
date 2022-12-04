@@ -2,47 +2,32 @@ package com.aeon.models.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.*;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Getter
-@Setter
+@Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "karyawan_training")
-
-public class KaryawanTraining implements Serializable {
+public class KaryawanTraining extends AbstractDate implements Serializable {
     
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "karyawan_id")
+    
+    @Column(name = "tanggal_training")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date tanggalTraining;
+    
+    @ManyToOne()
+    @JoinColumn(name = "karyawan_id", referencedColumnName = "id")
     private Karyawan karyawan;
 
-    @ManyToOne
-    @JoinColumn(name = "training_id")
+    @ManyToOne()
+    @JoinColumn(name = "training_id", referencedColumnName = "id")
     private Training training;
 
-    @Column(name = "created_date")
-    private Date created_date;
-
-    @Column(name = "deleted_date")
-    private Date deleted_date;
-
-    @Column(name = "updated_date")
-    private Date updated_date;
-
-    public KaryawanTraining(Long id, Date created_date, Date deleted_date, Date updated_date) {
-        this.id = id;
-        this.created_date = created_date;
-        this.deleted_date = deleted_date;
-        this.updated_date = updated_date;
-    }
-
-    
 }

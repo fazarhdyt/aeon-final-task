@@ -4,11 +4,9 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "detail_karyawan")
 
@@ -19,7 +17,7 @@ public class DetailKaryawan implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "id_karyawan")
     private Karyawan karyawan;
 
@@ -28,12 +26,6 @@ public class DetailKaryawan implements Serializable {
 
     @Column(name = "npwp")
     private String npwp;
-
-    public DetailKaryawan(Long id, String nik, String npwp) {
-        this.id = id;
-        this.nik = nik;
-        this.npwp = npwp;
-    }
 
     
 }

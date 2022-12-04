@@ -1,53 +1,36 @@
 package com.aeon.models.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Getter
-@Setter
+@Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "training")
 
-public class Training implements Serializable {
+public class Training extends AbstractDate implements Serializable {
     
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @OneToMany(cascade = CascadeType.ALL)
-    // private KaryawanTraining karyawantraining;
-
-    @Column(name = "created_date")
-    private Date created_date;
-
-    @Column(name = "deleted_date")
-    private Date deleted_date;
-
-    @Column(name = "updated_date")
-    private Date updated_date;
-
+    @NotEmpty(message = "nama pengajar is required")
     @Column(name = "nama_pengajar")
-    private String nama_pengajar;
-
+    private String namaPengajar;
+    
+    @NotEmpty(message = "tema is required")
     @Column(name = "tema")
     private String tema;
 
-    public Training(Long id, Date created_date, Date deleted_date, Date updated_date, String nama_pengajar,
-            String tema) {
-        this.id = id;
-        this.created_date = created_date;
-        this.deleted_date = deleted_date;
-        this.updated_date = updated_date;
-        this.nama_pengajar = nama_pengajar;
-        this.tema = tema;
-    }
-
-    
+    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL)
+    private List<KaryawanTraining> karyawanTrainings = new ArrayList<>();
 
 }
