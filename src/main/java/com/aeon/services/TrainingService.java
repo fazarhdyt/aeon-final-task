@@ -1,5 +1,7 @@
 package com.aeon.services;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,15 @@ public class TrainingService {
         return trainingRepo.save(training);
     }
 
-    public Iterable<Training> findByNamaAndTema(String nama, String tema, Pageable pageable){
-        return trainingRepo.findByNamaPengajarAndTemaContains(nama, tema, pageable);
+    public Training findOne(Long id){
+        Optional<Training> karyawan = trainingRepo.findById(id);
+        if(!karyawan.isPresent()){
+            return null;
+        }
+        return karyawan.get();
+    }
+
+    public Iterable<Training> findByNamaPengajar(String nama, Pageable pageable){
+        return trainingRepo.findByNamaPengajarContains(nama, pageable);
     }
 }

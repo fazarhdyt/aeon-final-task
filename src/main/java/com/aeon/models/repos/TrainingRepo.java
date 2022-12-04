@@ -8,5 +8,5 @@ import com.aeon.models.entities.Training;
 
 public interface TrainingRepo extends PagingAndSortingRepository<Training, Long>{
     
-    Page<Training> findByNamaPengajarAndTemaContains(String nama, String tema, Pageable pageable);
+    Page<Training> findByNamaPengajarContains(String nama, Pageable pageable);
 }
