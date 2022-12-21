@@ -20,6 +20,10 @@ public class TrainingKaryawanService {
         return trainingKaryawanRepo.save(karyawanTraining);
     }
 
+    public Iterable<KaryawanTraining> findAll(){
+        return trainingKaryawanRepo.findAll();
+    }
+
     // public Iterable<KaryawanTraining> findByNamaAndTema(String nama, String tema, Pageable pageable){
     //     return trainingKaryawanRepo.findByNamaPengajarAndTemaContains(nama, tema, pageable);
     // }

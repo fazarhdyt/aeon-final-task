@@ -1,10 +1,16 @@
 package com.aeon.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -14,11 +20,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aeon.dto.ResponseData;
 import com.aeon.dto.SearchData;
 import com.aeon.models.entities.KaryawanTraining;
+import com.aeon.models.repos.TrainingKaryawanRepo;
+import com.aeon.models.repos.TrainingRepo;
 import com.aeon.services.TrainingKaryawanService;
 
 @RestController
@@ -27,6 +36,9 @@ public class TrainingKaryawanController {
     
     @Autowired
     private TrainingKaryawanService trainingKaryawanService;
+
+    @Autowired
+    private TrainingKaryawanRepo trainingKaryawanRepo;
 
     @PostMapping
     public ResponseEntity<ResponseData<KaryawanTraining>> create(@Valid @RequestBody KaryawanTraining karyawanTraining, Errors errors){
@@ -46,10 +58,30 @@ public class TrainingKaryawanController {
         return ResponseEntity.ok(responseData);
     }
 
-    // @GetMapping("/list/{size}/{page}")
-    // public Iterable<KaryawanTraining> findByNamaAndTema(@RequestBody SearchData searchData, @RequestBody SearchData getOtherSearchKey, @PathVariable("size") int size, @PathVariable("page") int page){
-
-    //     Pageable pageable = PageRequest.of(page, size);
-    //     return trainingKaryawanService.findByNamaAndTema(searchData.getSearchKey(), searchData.getOtherSearchKey(), pageable);
+    // @GetMapping("/list")
+    // public Iterable<KaryawanTraining> findAll(){
+    //     return trainingKaryawanService.findAll();
     // }
+
+    @GetMapping("/list")
+    public ResponseEntity<Map> listByNamas(
+        @RequestParam() Integer page,
+        @RequestParam() Integer size, 
+        @RequestParam(required = false) String namaKaryawan) {
+        Map map = new HashMap();
+        Page<KaryawanTraining> list = null;
+        Pageable show_data = PageRequest.of(page, size, Sort.by("id").descending());//batasin roq
+
+
+        if ( namaKaryawan != null ) {
+            list = trainingKaryawanRepo.findByKaryawanNamaLike("%" + namaKaryawan + "%", show_data);
+        } else {
+            list = trainingKaryawanRepo.getAllData(show_data);
+        }
+
+        map.put("data", list);
+        map.put("message", "Sukses");
+        map.put("status", "200");
+        return new ResponseEntity<Map>(map, new HttpHeaders(), HttpStatus.OK);
+        }
 }

@@ -53,6 +53,11 @@ public class KaryawanController {
         return karyawanService.findOne(id);
     }
 
+    @GetMapping()
+    public Iterable<Karyawan> findAll(){
+        return karyawanService.findAll();
+    }
+
     @PutMapping
     public ResponseEntity<ResponseData<Karyawan>> update(@Valid @RequestBody Karyawan karyawan, Errors errors){
         

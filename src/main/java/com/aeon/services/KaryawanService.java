@@ -23,6 +23,10 @@ public class KaryawanService{
         return karyawanRepo.save(karyawan);
     }
 
+    public Iterable<Karyawan> findAll(){
+        return karyawanRepo.findAll();
+    }
+
     public Karyawan findOne(Long id){
         Optional<Karyawan> karyawan = karyawanRepo.findById(id);
         if(!karyawan.isPresent()){
