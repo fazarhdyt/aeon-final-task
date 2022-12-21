@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -49,6 +51,7 @@ public class Karyawan extends AbstractDate implements Serializable{
     @OneToOne(mappedBy = "karyawan", cascade = CascadeType.ALL)
     private DetailKaryawan detailKaryawan;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "karyawan", cascade = CascadeType.ALL)
     private List<KaryawanTraining> karyawanTrainings = new ArrayList<>();
     
